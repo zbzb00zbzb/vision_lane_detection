@@ -1,0 +1,182 @@
+/**
+ * @file lane_line.proto
+ * @author: Kuang Fangjun <csukuangfj at gmail dot com>
+ * @date June 06, 2018
+ */
+syntax = "proto2";
+package tt;
+
+enum MarkingType
+{
+    Normal_Lane_Marking = 2;
+    Gantry_Lane_Marking = 3;
+}
+
+message IPMParametersProto
+{
+    optional float pitch = 1 [default = 0];
+    optional float yaw   = 2 [default = 0];
+    optional float roll  = 3 [default = 0];
+
+    optional float cx    = 4 [default = -1];
+    optional float cy    = 5 [default = -1];
+    optional float fx    = 6 [default = -1];
+    optional float fy    = 7 [default = -1];
+
+    optional int32 x1    = 8 [default = -1];
+    optional int32 y1    = 9 [default = -1];
+    optional int32 x2    = 10 [default = -1];
+    optional int32 y2    = 11 [default = -1];
+
+    optional int32 width = 12 [default = 448];  // output width
+    optional int32 height= 13 [default = 448];  // output height
+
+
+    optional bool use_precomputed_H  = 14;  // true to use the precomputed image_to_ipm_tf homography
+    repeated float image_to_ipm_tf   = 15;
+}
+
+// TODO: (fangjun) separate preprocessing and IPM transformation
+
+// Parameters for preprocessing
+message PreprocessingProto
+{
+    //==========segnet start==========
+    optional bool use_gpu           = 1  [default = true];  // true to use GPU, false to use cpu
+    optional int32 device_id        = 2  [default = 0];     // used only when use_gpu is true.
+    optional string model_file      = 3;                    // *.prototxt, i.e., deploy.prototxt
+    optional string trained_file    = 4;                    // *..caffemodel, i.e., after_bn_calc2.caffemodel
+    optional string mean_file       = 5;                    // mean image filename of the training images
+
+    //----------segnet end----------
+
+    optional string name            = 6;                    // SEGNET
+    optional MarkingType lane_type  = 7;                    // 2-general, 3-gantry
+    optional bool use_gradient_mask = 8;                    // true to use gradient mask,
+}
+
+message RowScanProto
+{
+    optional int32 threshold        = 1;                    //  pixel intensities less than this value is ignored
+    optional int32 minimum_width    = 2;                    // area width less than this value is ignored
+}
+
+message DistTransProto
+{
+    optional float intensity_threshold   = 1 [default = 200];                    // distances less than this value are set to 0
+    optional float dist_threshold        = 2 [default = 3];                    // distances less than this value are set to 0
+}
+
+message NarrowingProto
+{
+    optional RowScanProto row_scan_param        = 1;
+    optional DistTransProto dist_trans_param    = 2;
+    optional string name                        = 3;  // RowScan, DistTrans
+}
+
+message PointsExtractionProto
+{
+    optional int32 max_x_dir_search       = 1 [default = 20];
+    optional int32 max_y_dir_search       = 2 [default = 20];
+}
+
+message LaneLineDetectorProto
+{
+    optional IPMParametersProto ipm_param           = 1;
+    optional PreprocessingProto preprocessing_param = 2;
+    optional NarrowingProto narrowing_param         = 3;
+    optional PointsExtractionProto points_ex_param  = 4;
+
+    optional CurveFittingProto curve_fitting_param  = 5;
+
+    /*
+      line:
+         [0]: delta_theta, degree
+         [1]: delta_d, pixels
+    */
+    repeated float curve_similarity_thresholds      = 6;
+    optional float minimum_distance_between_curves  = 7;
+    optional int32 detected_line_queue_size         = 8 [default = 1];
+    optional int32 flip_image                        =9 [default = 0];
+    optional int32 sample_points_step_size          = 10;   //
+    optional string type                            = 11;   // gantry, general
+    optional int32 minimum_detected_count           = 12;   // curves less than this number are discarded
+
+    optional MergeLinesProto merge_lines_param        = 13;
+    optional RemoveLinesProto remove_lines_param      = 14;
+    optional FilterLinesProto filter_lines_param      = 15;
+    optional KalmanLineFilterProto kalman_line_filter_param = 16;
+    optional VisualizationProto visualization_param   = 17;                      
+}
+
+message CurveFittingProto
+{
+    optional float threshold            = 1 [default = 1];
+    optional int32 max_iterations       = 2 [default = 1000];
+    optional float confidence           = 3 [default = 0.995];
+    optional string name                = 4 [default = "line"];    // line, quadratic, cubic
+    optional int32 minimum_points       = 5; // minimum points required to fit a curve.
+}
+
+message MergeLinesProto
+{
+    // if the theta diff and the d diff between two
+    // lines are within the specified thresholds, then
+    // they are merged.
+    optional float theta_diff_in_degree = 1;
+    optional float d_diff_in_pixel = 2;
+}
+
+message RemoveLinesProto
+{
+    // if the theta_diff or d_diff between two lines
+    // is larger than the given value, then the
+    // line with smaller number of inliers are removed.
+    optional float minimum_theta_diff_in_degree = 1;
+    optional float minimum_d_diff_in_pixel = 2;
+}
+
+message FilterLinesProto
+{
+    optional int32 queue_size = 1;
+    optional int32 minimum_detected_count = 2;
+    optional float minimum_theta_diff_in_degree = 3;    // two lines with theta diff less than this value
+    optional float minimum_d_diff_in_pixel = 4;         // and d diff less than this value are considered the same
+    optional int32 at_least_inlier_count   = 5;         // if a line has this number of points, then it is shown
+}
+
+message KalmanLineFilterProto
+{
+    optional float minimum_theta_diff_in_degree = 1;
+    optional float minimum_d_diff_in_pixel = 2;
+    optional int32 maximum_missed_count = 3;    // if a line is not detected for this number of counts, it is not tracked any more.
+}
+
+message VisualizationProto
+{
+    optional bool draw_left_right_boundary = 1; // true to draw the left and the right boundary
+    optional bool only_show_original_image = 2; // true to not show segmentation result and to not show the IPM results.
+}
+
+message ColorProto
+{
+    optional int32 red      = 1;
+    optional int32 green    = 2;
+    optional int32 blue     = 3;
+}
+
+message EvaluationProto
+{
+    optional IPMParametersProto ipm_param   = 1;  // IPM parameters
+    repeated string image_mask_dir          = 2;  // image mask dir
+    optional ColorProto lane_marking_color  = 3;  // lane marking color in the mask image
+    optional string write_mask_to_dir       = 4;  // dir to save masks
+
+    optional NarrowingProto narrowing_param = 5;
+    optional PointsExtractionProto points_ex_param  = 6;
+
+    optional CurveFittingProto curve_fitting_param  = 7;
+    optional MergeLinesProto merge_lines_param      = 8;
+    optional RemoveLinesProto remove_lines_param    = 9;
+    optional int32 draw_width                       = 10;
+}
