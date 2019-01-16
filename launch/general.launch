@@ -1,0 +1,13 @@
+<!--author: Kuang Fangjun <csukuangfj at gmail dot com>-->
+<!--date: August 13, 2018    -->
+<!--usage: roslaunch lane_line general.launch-->
+
+<launch>
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find lane_line)/config/custom_rosconsole.conf"/>
+
+    <env name="GLOG_minloglevel" value="1"/>
+
+    <node pkg="lane_line" type="lane_line_general" name="lane_line_general" output="screen"> <!-- screen/log -->
+        <rosparam command="load" file="$(find lane_line)/config/general.yaml" />
+    </node>
+</launch>

@@ -1,0 +1,17 @@
+<!--author: Kuang Fangjun <csukuangfj at gmail dot com>-->
+<!--date: August 13, 2018    -->
+<!--usage: roslaunch lane_line gantry.launch-->
+
+<launch>
+    <env name="ROSCONSOLE_CONFIG_FILE" value="$(find lane_line)/config/custom_rosconsole.conf"/>
+
+    <env name="GLOG_minloglevel" value="1"/>
+
+    <node pkg="lane_line" type="lane_line_gantry" name="lane_line_gantry" output="screen"> <!-- screen/log -->
+        <rosparam command="load" file="$(find lane_line)/config/gantry.yaml" />
+        <param name="proto_txt_config" type="string" value="$(find lane_line)/config/proto.txt" />
+
+        <param name="caffe_proto_file" type="string" value="$(find lane_line)/models/deploy.prototxt" />
+        <param name="caffe_trained_file" type="string" value="$(find lane_line)/models/after_bn_calc2.caffemodel" />
+    </node>
+</launch>
