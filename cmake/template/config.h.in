@@ -1,0 +1,33 @@
+/**
+ * @file config.h
+ * @author: Kuang Fangjun <csukuangfj at gmail dot com>
+ * @date June 04, 2018
+ */
+
+// Auto generated. Do NOT edit!!!
+
+#ifndef LANE_LINE_CONFIG_H
+#define LANE_LINE_CONFIG_H
+
+// the directory for test data
+#cmakedefine TEST_DATA_DIR "@TEST_DATA_DIR@"
+
+// use GPU for cnn
+#cmakedefine01 CNN_USE_GPU
+
+// true if it is NVIDIA PX2
+#cmakedefine01 IS_PX2
+
+// the model filename, i.e., *.prototxt
+#cmakedefine CNN_PROTO_FILENAME "@CNN_PROTO_FILENAME@"  // NOLINT
+
+// the trained file, i.e., *.caffemodel
+#cmakedefine CNN_TRAINED_FILENAME "@CNN_TRAINED_FILENAME@"  // NOLINT
+
+// configuration filename for protobuf
+#cmakedefine CONFIG_PROTO_FILENAME "@CONFIG_PROTO_FILENAME@"
+
+// configuration filename for evaluation
+#cmakedefine EVAL_PROTO_FILENAME "@EVAL_PROTO_FILENAME@"
+
+#endif  // LANE_LINE_CONFIG_H
