@@ -1,0 +1,3 @@
+python computer_perspective_trans_ros.py /pylon_camera_2/pylon_camera_node/image_raw/compressed 1
+第一个参数是需要标定外参的相机图像名称，这里必须是pylon_cmaera 的 compressed图像
+第二个参数是图像是否需要翻转，1：翻转，0：不需要翻转。天津港相机安装在驾驶室内部，是翻转过来安装的，因此对天津港的车辆标定外参的时候，该参数为1；唐山港相机安装在车顶，正常安装，该参数为0。

@@ -1,0 +1,26 @@
+ipm_param {
+pitch: 8.8
+yaw: -4
+roll: 0.1
+cx: 480
+cy: 300
+fx: 700
+fy: 700
+x1: 253
+y1: 214
+x2: 621
+y2: 502
+width: 448
+height: 448
+}
+
+preprocessing_param {
+  use_gpu: true
+  model_file: "/home/fangjun/gitlab/lane_line/models/deploy.prototxt"
+  trained_file: "/home/fangjun/gitlab/lane_line/models/after_bn_calc2.caffemodel"
+  #trained_file: "/home/fangjun/gitlab/lane_line/models/raw-image.caffemodel"
+  name: "SEGNET"
+  lane_type: Normal_Lane_Marking
+  #use_gradient_mask: true
+  use_gradient_mask: false
+}

@@ -1,0 +1,22 @@
+#
+# author: Kuang Fangjun <csukuangfj at gmail dot com>
+# date: September 04, 2018
+#
+#
+
+# configuration file for left-0054.png
+
+use_precomputed_H: true
+
+image_to_ipm_tf: -3.2792978
+image_to_ipm_tf: 1.7761892
+image_to_ipm_tf: -3137.7334
+image_to_ipm_tf: -5.0577364
+image_to_ipm_tf: -14.484867
+image_to_ipm_tf: 8963.6885
+image_to_ipm_tf: -0.00036254252
+image_to_ipm_tf: -0.030238844
+image_to_ipm_tf: 1
+
+width: 448
+height: 448

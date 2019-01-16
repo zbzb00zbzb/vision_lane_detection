@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<package format="2">
+  <name>lane_line</name>
+  <version>0.0.1</version>
+  <description>The lane_line package</description>
+
+  <maintainer email="csukuangfj@gmail.com">Fangjun Kuang</maintainer>
+  <license>TODO</license>
+  <author email="csukuangfj@gmail.com">Fangjun Kuang</author>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <depend>cv_bridge</depend>
+  <depend>hadmap_msgs</depend>
+  <depend>roscpp</depend>
+
+  <export />
+</package>

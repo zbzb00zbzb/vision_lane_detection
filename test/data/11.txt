@@ -1,0 +1,22 @@
+#
+# author: Kuang Fangjun <csukuangfj at gmail dot com>
+# date: September 04, 2018
+#
+#
+
+# configuration file for 11.png
+
+use_precomputed_H: true
+
+image_to_ipm_tf: -0.2098619
+image_to_ipm_tf: -0.49916267
+image_to_ipm_tf: 320.75082
+image_to_ipm_tf: -0.16294684
+image_to_ipm_tf: -1.3517176
+image_to_ipm_tf: 821.09357
+image_to_ipm_tf: -0.00036143512
+image_to_ipm_tf: -0.0021920004
+image_to_ipm_tf: 1
+
+width: 448
+height: 448
