@@ -1,0 +1,39 @@
+#
+# author: Kuang Fangjun <csukuangfj at gmail dot com>
+# date: August 13, 2018
+#
+
+# usage:
+#  roslaunch lane_line image_view.launch
+
+# the ros topic name
+#camera_topic: /left/pylon_camera_node/image_raw
+#camera_topic: /pylon_camera_node/image_raw/compressed
+camera_topic: /lane_detection/visualization
+
+# -1 to not resize the width
+resize_image_to_width: 960
+
+# -1 to not resize the height
+resize_image_to_height: 600
+
+# true to flip left/right
+flip_x: false
+
+# true to flip up/down
+flip_y: false
+
+# false to not show received images
+show_image: true
+
+# true to save the received images
+save_image: false
+
+# valid if save_image is true
+# where to save the received images.
+# if the directory does not exist, it is created.
+# if it fails to create it, the program exits immediately.
+save_image_to_dir: /tmp/test
+
+save_video: true
+save_video_to_filename: /home/fangjun/Desktop/test.mp4

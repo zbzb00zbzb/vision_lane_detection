@@ -1,0 +1,19 @@
+
+# subscribe to the compressed image, it is flipped in the code.
+camera_topic: /pylon_camera_2/pylon_camera_node/image_raw/compressed
+#camera_topic: /middle/pylon_camera_node/image_raw/compressed
+
+# No flip is performed if image_raw is subscribed!
+
+# position of the truck in the image
+# used only to send hadmap messages
+truck_pos_x: 960  # if precomputed H is used, set it to 960; otherwise set it to 480
+truck_pos_y: 1200  # if precomputed H is used, set it to 1200; otherwise set it to 600
+
+num_pixels_per_meter_x_dir: 30   # number of pixels per meter in the horizontal direction in the IPM image
+num_pixels_per_meter_y_dir: 20   # number of pixel per meter in the vertical direction in the IPM image
+
+hadmap_message_topic: /lane_detection/hadmap_new_msg
+
+# for visualization only
+visualization_message_topic: /lane_detection/visualization

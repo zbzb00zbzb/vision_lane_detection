@@ -1,0 +1,77 @@
+ipm_param {
+  width: 448
+  height: 448
+
+use_precomputed_H: true
+
+image_to_ipm_tf:  -0.5083206375249019
+image_to_ipm_tf:  -0.8929743349349529
+image_to_ipm_tf:  711.2612211414482
+image_to_ipm_tf:  -2.6645352591003757e-15
+image_to_ipm_tf:  -1.9574299777334956
+image_to_ipm_tf:  692.977792101253
+image_to_ipm_tf:  -6.071532165918825e-18
+image_to_ipm_tf:  -0.0039112855970936155
+image_to_ipm_tf:  1.0
+}
+
+preprocessing_param {
+  use_gpu: true
+  name: "SEGNET"
+  lane_type: Normal_Lane_Marking
+  use_gradient_mask: false
+}
+narrowing_param {
+  row_scan_param {
+    threshold: 200          # pixels with intensity less than threshold are ignored
+    minimum_width: 6        # area width less than this value is ignored
+  }
+  name: "RowScan"
+}
+points_ex_param {
+  max_x_dir_search: 20
+  max_y_dir_search: 100
+}
+curve_fitting_param {
+  threshold: 3
+  max_iterations: 2000
+  confidence: 0.98
+  name: "line"
+  minimum_points: 120
+}
+merge_lines_param {
+  theta_diff_in_degree: 5       # lines with theta diff less than this value
+  d_diff_in_pixel: 15            # and d_diff less than this value are merged
+}
+
+remove_lines_param {
+  minimum_theta_diff_in_degree: 12        # lines with theta diff greater than this value are removed (the line with larger inliers size is kept)
+  minimum_d_diff_in_pixel: 15           # lines with d diff less than this value are removed (the line with larger inliers size is kept)
+}
+
+filter_lines_param {
+  queue_size: 20
+  minimum_detected_count: 3
+  minimum_theta_diff_in_degree:  5
+  minimum_d_diff_in_pixel:  10
+
+  at_least_inlier_count: 250    # if a line with at least this many number of inliers, then it is shown
+}
+kalman_line_filter_param {
+  minimum_theta_diff_in_degree: 5
+  minimum_d_diff_in_pixel: 10
+  maximum_missed_count: 5
+}
+visualization_param {
+  draw_left_right_boundary: true
+  only_show_original_image: false
+}
+
+curve_similarity_thresholds: 10         # theta in degree
+curve_similarity_thresholds: 15         # d in pixel
+minimum_distance_between_curves: 80     #
+detected_line_queue_size: 20
+flip_image: 0
+sample_points_step_size: 1
+type: "general"
+minimum_detected_count: 3

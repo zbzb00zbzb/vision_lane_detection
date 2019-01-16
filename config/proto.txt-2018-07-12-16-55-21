@@ -1,0 +1,79 @@
+ipm_param {
+pitch: 8.8
+yaw: -4
+roll: 0.1
+cx: 480
+cy: 300
+fx: 700
+fy: 700
+x1: 253
+y1: 214
+x2: 621
+y2: 502
+width: 448
+height: 448
+}
+preprocessing_param {
+  use_gpu: true
+  model_file: "/home/fangjun/gitlab/lane_line/models/deploy.prototxt"
+  trained_file: "/home/fangjun/gitlab/lane_line/models/after_bn_calc2.caffemodel"
+  #trained_file: "/home/fangjun/gitlab/lane_line/models/raw-image.caffemodel"
+  name: "SEGNET"
+  lane_type: Normal_Lane_Marking
+  #use_gradient_mask: true
+  use_gradient_mask: true
+}
+narrowing_param {
+  row_scan_param {
+    threshold: 100          # pixels with intensity less than threshold are ignored
+    minimum_width: 2        # area width less than this value is ignored
+  }
+  name: "RowScan"
+}
+points_ex_param {
+  max_x_dir_search: 10
+  max_y_dir_search: 100
+}
+curve_fitting_param {
+  threshold: 1
+  max_iterations: 2000
+  confidence: 0.98
+  name: "line"
+  minimum_points: 30
+}
+merge_lines_param {
+  theta_diff_in_degree: 10       # lines with theta diff less than this value
+  d_diff_in_pixel: 15            # and d_diff less than this value are merged
+}
+
+remove_lines_param {
+  minimum_theta_diff_in_degree: 15        # lines with theta diff greater than this value are removed (the line with larger inliers size is kept)
+  minimum_d_diff_in_pixel: 50           # lines with d diff less than this value are removed (the line with larger inliers size is kept)
+}
+
+filter_lines_param {
+  queue_size: 10
+  minimum_detected_count: 8
+  minimum_theta_diff_in_degree:  15
+  minimum_d_diff_in_pixel:  50
+
+  at_least_inlier_count: 100    # if a line with at least this many number of inliers, then it is shown
+}
+kalman_line_filter_param {
+  minimum_theta_diff_in_degree: 5
+  minimum_d_diff_in_pixel: 10
+  maximum_missed_count: 3
+}
+
+visualization_param {
+  draw_left_right_boundary: true
+  only_show_original_image: false
+}
+
+curve_similarity_thresholds: 10         # theta in degree
+curve_similarity_thresholds: 15         # d in pixel
+minimum_distance_between_curves: 50     #
+detected_line_queue_size: 20
+sample_points_step_size: 1
+type: "general"
+minimum_detected_count: 10

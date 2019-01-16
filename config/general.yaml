@@ -1,0 +1,12 @@
+
+camera_topic: /left/pylon_camera_node/image_raw
+
+# position of the truck in the image
+# used only to send hadmap messages
+truck_pos_x: 480
+truck_pos_y: 600
+scale_pixel_to_centimeter: 1  # 1 pixel equals to this number of centimeters, used only for hadmap messages
+hadmap_message_topic: /lane_detection/hadmap_new_msg
+
+# for visualization only
+visualization_message_topic: /lane_detection/visualization

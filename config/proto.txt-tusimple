@@ -1,0 +1,43 @@
+ipm_param {
+  pitch: 8.1
+  yaw: 3.7
+  roll: 0
+  cx: 640
+  cy: 360
+  fx: 700
+  fy: 700
+  x1: 440
+  y1: 303
+  x2: 794
+  y2: 700
+  width: 448
+  height: 448
+}
+preprocessing_param {
+  use_gpu: true
+  model_file: "/home/fangjun/gitlab/lane_line/models/deploy.prototxt"
+  trained_file: "/home/fangjun/gitlab/lane_line/models/after_bn_calc2.caffemodel"
+  name: "SEGNET"
+  lane_type: 3
+}
+narrowing_param {
+  row_scan_param {
+    threshold: 230
+  }
+  name: "RowScan"
+}
+points_ex_param {
+  max_x_dir_search: 20
+  max_y_dir_search: 20
+}
+curve_fitting_param {
+  threshold: 2
+  max_iterations: 1000
+  confidence: 0.98
+  name: "line"
+  minimum_points: 30
+}
+curve_similarity_thresholds: 8
+curve_similarity_thresholds: 15
+minimum_distance_between_curves: 123
+detected_line_queue_size: 5
